@@ -1,0 +1,61 @@
+#include <iostream>
+using namespace std;
+
+
+bool dfs(int maze[6][6], int x, int y, int goalX, int goalY, bool visited[6][6]) {
+
+    if (x < 0 || x >= 6 || y < 0 || y >= 6 || maze[x][y] == 1 || visited[x][y]) {
+        return false;
+    }
+
+  
+    if (x == goalX && y == goalY) {
+        return true;
+    }
+
+    visited[x][y] = true;
+
+  
+    if (dfs(maze, x + 1, y, goalX, goalY, visited) ||
+        dfs(maze, x - 1, y, goalX, goalY, visited) ||
+        dfs(maze, x, y + 1, goalX, goalY, visited) ||
+        dfs(maze, x, y - 1, goalX, goalY, visited)) {
+        return true;
+    }
+
+    return false;
+}
+
+
+bool findPath(int maze[6][6], int startX, int startY, int goalX, int goalY) {
+    bool visited[6][6] = {false};
+    return dfs(maze, startX, startY, goalX, goalY, visited);
+}
+
+int main() {
+  
+    int maze[6][6] = {
+        {0, 0, 1, 0, 1, 0},
+        {1, 0, 1, 0, 1, 0},
+        {1, 0, 0, 0, 1, 0},
+        {1, 1, 1, 0, 1, 0},
+        {0, 0, 0, 0, 0, 0},
+        {1, 1, 1, 1, 1, 9}
+    };
+
+    int startX = 0, startY = 0;
+    int goalX = 5, goalY = 5;
+
+ 
+    if (maze[goalX][goalY] == 9) {
+        maze[goalX][goalY] = 0;
+    }
+
+    if (findPath(maze, startX, startY, goalX, goalY)) {
+        cout << "Path exists!" << endl;
+    } else {
+        cout << "No path found!" << endl;
+    }
+
+    return 0;
+}
